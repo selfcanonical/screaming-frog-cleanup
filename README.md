@@ -23,13 +23,12 @@ Screaming Frog's **Bulk Export > Issues > All** gives you 100+ CSV files and hun
 
 **Claude app (claude.ai or desktop)**
 1. Turn on code execution: **Settings > Capabilities**.
-2. Download `screaming-frog-cleanup.zip` from the [Releases](../../releases) page (or zip the `screaming-frog-cleanup` folder yourself).
+2. Download `screaming-frog-cleanup.zip` from the [Releases](https://github.com/selfcanonical/screaming-frog-cleanup/releases) page.
 3. Go to **Customize > Skills**, click **+**, and upload the zip.
 
 **Claude Code**
 ```bash
-git clone https://github.com/<your-username>/screaming-frog-cleanup.git
-cp -r screaming-frog-cleanup/screaming-frog-cleanup ~/.claude/skills/
+git clone https://github.com/selfcanonical/screaming-frog-cleanup.git ~/.claude/skills/screaming-frog-cleanup
 ```
 
 ## Use
@@ -45,29 +44,27 @@ The workbooks come from a plain Python script, so you can run it yourself:
 
 ```bash
 pip install pandas openpyxl reportlab
-python3 screaming-frog-cleanup/scripts/sf_clean.py All_Issues.zip out "Client Name"
-python3 screaming-frog-cleanup/scripts/sf_pdf.py summary.md summary.pdf
+python3 sf_clean.py All_Issues.zip out "Client Name"
+python3 sf_pdf.py summary.md summary.pdf
 ```
 
 `sf_clean.py` writes the two workbooks plus `<client>_summary.json`. Claude uses that JSON to write the executive summary, and `sf_pdf.py` turns any Markdown summary into a styled PDF.
 
 ## Customize the priorities
 
-All the judgment lives at the top of `scripts/sf_clean.py`:
+All the judgment lives at the top of `sf_clean.py`:
 
 - `RULES`: checks that are kept, with their tier (1 Critical, 2 Important, 3 Minor), area, effort and plain-English "why it matters" line.
 - `DROP` and `DROP_PREFIXES`: checks that only go to the appendix.
 
 Move a check between them to match how you audit. Pull requests with better rules are welcome.
 
-## Repo layout
+## Files
 
 ```
-screaming-frog-cleanup/        <- the skill (this folder is what you install)
-  SKILL.md                     <- instructions Claude follows
-  scripts/
-    sf_clean.py                <- builds the clean and raw merged workbooks
-    sf_pdf.py                  <- turns the Markdown summary into a PDF
+SKILL.md      <- instructions Claude follows
+sf_clean.py   <- builds the clean and raw merged workbooks
+sf_pdf.py     <- turns the Markdown summary into a PDF
 README.md
 LICENSE
 ```
